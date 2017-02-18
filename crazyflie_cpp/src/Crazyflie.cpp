@@ -5,7 +5,6 @@
 #include "crtp.h"
 
 #include "Crazyradio.h"
-
 #include <iostream>
 #include <cstring>
 #include <stdexcept>
@@ -297,6 +296,7 @@ bool Crazyflie::sendPacket(
   static uint32_t numAcks = 0;
 
   numPackets++;
+	     //printf("Console: %f\n", (float)numAcks);
 
   Crazyradio::Ack ack;
   {
@@ -317,7 +317,8 @@ bool Crazyflie::sendPacket(
     handleAck(ack);
     numAcks++;
   }
-  if (numPackets == 100) {
+  if (numPackets >= 100) {
+
     if (m_linkQualityCallback) {
       // We just take the ratio of sent vs. acked packets here
       // for a sliding window of 100 packets

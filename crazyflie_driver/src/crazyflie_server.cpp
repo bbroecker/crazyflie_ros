@@ -306,12 +306,13 @@ private:
                 m_cf.sendSetpoint(0, 0, 0, 0);
             }
 
-            while (!m_isEmergency and m_linkQuality > 0) {
+            while (!m_isEmergency and m_linkQuality > 0.1) {
                 // make sure we ping often enough to stream data out
                 if (m_enableLogging && !m_sentSetpoint && !m_sentExternalPosition) {
                     m_cf.sendPing();
                 }
                 m_sentSetpoint = false;
+            	//ROS_INFO("send %f\n", m_linkQuality);
                 m_sentExternalPosition = false;
                 std::this_thread::sleep_for(std::chrono::milliseconds(1));
             }
@@ -321,6 +322,7 @@ private:
                 m_cf.sendSetpoint(0, 0, 0, 0);
             }
 
+            ROS_INFO("done\n");
         }
     }
 
@@ -420,7 +422,7 @@ private:
 
     void onLinkQuality(float linkQuality) {
         if (linkQuality < 0.7) {
-            ROS_WARN("Link Quality low (%f)", linkQuality);
+            ROS_WARN("Link Quality low (%f)\n", linkQuality);
         }
         m_linkQuality = linkQuality;
     }
